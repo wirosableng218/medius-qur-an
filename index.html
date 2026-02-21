@@ -100,6 +100,26 @@
 
         .centris { text-align: center; }
         .tracking-ultra { letter-spacing: 0.5em; }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .app-frame { 
+                padding: 25px; 
+                border-radius: 25px; 
+            }
+            .input-field { 
+                font-size: 1.2rem; 
+                padding: 15px; 
+            }
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+            .btn-calc {
+                padding: 18px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -116,7 +136,21 @@
                 <a onclick="showPage('asma')" id="nav-asma" class="nav-link">Asma Diri</a>
                 <a onclick="showPage('layanan')" id="nav-layanan" class="nav-link">Layanan</a>
             </div>
-            <button onclick="showPage('app')" class="bg-yellow-500 text-slate-900 px-10 py-3 rounded-full text-[11px] font-black hover:bg-white transition uppercase tracking-widest">Cek Sistem</button>
+            <button onclick="toggleMobileMenu()" class="lg:hidden text-white text-2xl">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <button onclick="showPage('app')" class="hidden lg:block bg-yellow-500 text-slate-900 px-10 py-3 rounded-full text-[11px] font-black hover:bg-white transition uppercase tracking-widest">Cek Sistem</button>
+        </div>
+        <div id="mobileMenu" class="hidden lg:hidden bg-slate-900/95 border-t border-white/5">
+            <div class="px-10 py-6 space-y-4">
+                <a onclick="showPage('home'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition">Beranda</a>
+                <a onclick="showPage('mizaj'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition">Mizaj</a>
+                <a onclick="showPage('juz'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition">Juz Diri</a>
+                <a onclick="showPage('asma'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition">Asma Diri</a>
+                <a onclick="showPage('layanan'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition">Layanan</a>
+                <button onclick="showPage('app'); toggleMobileMenu()" class="w-full bg-yellow-500 text-slate-900 px-6 py-3 rounded-full text-[11px] font-black hover:bg-white transition uppercase tracking-widest mt-4">Cek Sistem</button>
+            </div>
+        </div>
         </div>
     </nav>
 
@@ -224,9 +258,9 @@
             </div>
             <div class="app-frame centris">
                 <div class="grid grid-cols-3 gap-6 mb-8">
-                    <input type="number" id="tgl" placeholder="TGL" class="input-field">
-                    <input type="number" id="bln" placeholder="BLN" class="input-field">
-                    <input type="number" id="thn" placeholder="THN" class="input-field">
+                    <input type="number" id="tgl" placeholder="Tanggal" class="input-field" min="1" max="31">
+                    <input type="number" id="bln" placeholder="Bulan" class="input-field" min="1" max="12">
+                    <input type="number" id="thn" placeholder="Tahun" class="input-field" min="1900" max="2026">
                 </div>
                 <button onclick="prosesHitung()" class="btn-calc">Jalankan Analisis</button>
                 
@@ -357,6 +391,11 @@
             const activeNav = document.getElementById('nav-' + pageId);
             if(activeNav) activeNav.classList.add('active');
             window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
         }
 
         const osTitles = {
