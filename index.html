@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="MEDiUS - Personal Energy System. Mengenal Energi Diri untuk Sehat dengan analisis Juz Diri, Mizaj, dan Asma Diri berbasis Al-Qur'an.">
+    <meta name="keywords" content="MEDiUS, energi diri, juz diri, mizaj, asma diri, kesehatan, meditasi, al-qur'an, personal energy">
+    <meta name="author" content="MEDiUS Team">
+    <meta property="og:title" content="MEDiUS - Personal Energy System">
+    <meta property="og:description" content="Mengenal Energi Diri untuk Sehat">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://via.placeholder.com/1200x630/0f172a/f59e0b?text=MEDiUS+Personal+Energy+System">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <title>MEDiUS - Personal Energy System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:italic,wght@700&display=swap');
+        
+        body { font-family: 'Montserrat', sans-serif; background-color: #0f172a; color: white; overflow-x: hidden; }
+        
+        /* Navigasi Mewah */
+        .nav-link { cursor: pointer; transition: 0.3s; position: relative; padding: 10px 0; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #f59e0b; transition: 0.3s; }
+        .nav-link.active { color: #f59e0b; }
+        .nav-link.active::after { width: 100%; }
+
+        /* Page System */
+        .page-content { display: none; min-height: 85vh; opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .page-content.active { display: block; opacity: 1; transform: translateY(0); }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(245, 158, 11, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(245, 158, 11, 0.6); }
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .float-animation { animation: float 6s ease-in-out infinite; }
+        .glow-animation { animation: glow 3s ease-in-out infinite; }
+        .slide-animation { animation: slideIn 1s ease-out; }
+        
+        /* Enhanced Glassmorphism */
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 35px; 
+            padding: 3.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            transition: left 0.5s;
+        }
+        .glass-card:hover::before {
+            left: 100%;
+        }
+
+        /* Mizaj Visual (Diamond) */
+        .mizaj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 300px; height: 300px; transform: rotate(45deg); margin: 60px auto; }
+        .mizaj-box { display: flex; align-items: center; justify-content: center; transform: rotate(-45deg); font-weight: 900; font-size: 12px; color: white; border-radius: 18px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+
+        /* Enhanced Service Cards */
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 400px;
+            position: relative;
+            overflow: hidden;
+        }
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .service-card:hover::before {
+            opacity: 1;
+        }
+        .service-card:hover { 
+            transform: translateY(-15px) scale(1.02); 
+            background: rgba(255, 255, 255, 0.07); 
+            border-color: rgba(245, 158, 11, 0.4);
+            box-shadow: 0 30px 60px rgba(245, 158, 11, 0.2);
+        }
+        
+        /* Enhanced Buttons */
+        .btn-order {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: inline-block;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-order::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        .btn-order:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        .btn-order:hover { 
+            background: #fff; 
+            color: #000; 
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.3);
+        }
+
+        /* MODIFIKASI KHUSUS APLIKASI JUZ */
+        .app-frame { 
+            max-width: 650px; 
+            margin: 0 auto; 
+            background: #000000; 
+            border-radius: 50px; 
+            padding: 50px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8); 
+        }
+        .input-field { 
+            width: 100%; 
+            background: #000000; 
+            border: 2px solid rgba(255,255,255,0.2); 
+            padding: 20px; 
+            border-radius: 20px; 
+            color: #ffffff; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-size: 1.5rem; 
+            font-weight: 900; 
+            transition: all 0.3s ease;
+        }
+        .input-field:focus { 
+            border-color: #f59e0b; 
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); 
+            outline: none; 
+        }
+        .btn-calc { width: 100%; background: #e74c3c; color: white; padding: 22px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: 0.3s; }
+        .btn-calc:hover { background: #ff5e4d; transform: scale(1.02); }
+
+        .centris { text-align: center; }
+        .tracking-ultra { letter-spacing: 0.5em; }
+        
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 768px) {
+            /* Navigation */
+            .nav-link { font-size: 9px; padding: 8px 0; }
+            .app-frame { 
+                padding: 20px 15px; 
+                border-radius: 20px; 
+                margin: 0 10px;
+            }
+            
+            /* Typography */
+            h1 { font-size: 4rem !important; }
+            h2 { font-size: 2rem !important; }
+            h3 { font-size: 1.5rem !important; }
+            .text-3xl { font-size: 1.25rem !important; }
+            .text-9xl { font-size: 4rem !important; }
+            .text-4xl { font-size: 2rem !important; }
+            
+            /* Input Fields */
+            .input-field { 
+                font-size: 1.1rem; 
+                padding: 18px 15px; 
+                border-radius: 15px;
+                margin-bottom: 10px;
+            }
+            .grid-cols-3 {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            
+            /* Buttons */
+            .btn-calc {
+                padding: 20px 15px;
+                font-size: 0.85rem;
+                border-radius: 15px;
+                letter-spacing: 1px;
+            }
+            .btn-order {
+                padding: 14px 12px;
+                font-size: 10px;
+                border-radius: 15px;
+            }
+            
+            /* Cards */
+            .glass-card {
+                padding: 2rem 1.5rem;
+                border-radius: 25px;
+                margin-bottom: 1rem;
+            }
+            .service-card {
+                padding: 2rem 1.5rem;
+                border-radius: 30px;
+                min-height: 300px;
+            }
+            
+            /* Grid Layouts */
+            .grid-cols-2 { grid-template-columns: 1fr; }
+            .grid-cols-4 { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .md\\:grid-cols-2 { grid-template-columns: 1fr; }
+            .md\\:grid-cols-3 { grid-template-columns: 1fr; }
+            .lg\\:grid-cols-4 { grid-template-columns: repeat(2, 1fr); }
+            
+            /* Spacing */
+            .pt-48 { padding-top: 6rem; }
+            .pb-32 { padding-bottom: 4rem; }
+            .px-10 { padding-left: 1rem; padding-right: 1rem; }
+            .mb-12 { margin-bottom: 2rem; }
+            .mb-20 { margin-bottom: 3rem; }
+            .gap-8 { gap: 1rem; }
+            .gap-6 { gap: 0.75rem; }
+            
+            /* Hero Section */
+            .float-animation { animation-duration: 4s; }
+            .slide-animation { animation-duration: 0.8s; }
+            
+            /* Statistics */
+            .text-4xl { font-size: 2rem !important; }
+            
+            /* Footer */
+            footer { padding: 3rem 1rem; }
+            
+            /* Mobile Menu */
+            #mobileMenu {
+                backdrop-filter: blur(20px);
+                background: rgba(15, 23, 42, 0.95);
+            }
+        }
+        
+        /* Touch Interactions for Mobile */
+        @media (hover: none) and (pointer: coarse) {
+            .glass-card:active {
+                transform: scale(0.98);
+                background: rgba(255, 255, 255, 0.08);
+            }
+            .service-card:active {
+                transform: translateY(-5px) scale(0.98);
+            }
+            .btn-order:active {
+                transform: scale(0.95);
+            }
+            .btn-calc:active {
+                transform: scale(0.98);
+            }
+        }
+        
+        /* Mobile-Specific Enhancements */
+        @media (max-width: 768px) {
+            /* Better touch targets */
+            .glass-card, .service-card {
+                cursor: pointer;
+                -webkit-tap-highlight-color: rgba(245, 158, 11, 0.2);
+            }
+            
+            /* Smooth scrolling for mobile */
+            html {
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* Prevent zoom on input focus */
+            input[type="number"] {
+                font-size: 16px;
+            }
+            
+            /* Better mobile animations */
+            .float-animation { animation: floatMobile 4s ease-in-out infinite; }
+            @keyframes floatMobile {
+                0%, 100% { transform: translateY(0px); }
+                50% { transform: translateY(-10px); }
+            }
+        }
+        
+        /* Extra Small Screens */
+        @media (max-width: 480px) {
+            .text-9xl { font-size: 3rem !important; }
+            .text-4xl { font-size: 1.5rem !important; }
+            .grid-cols-4 { grid-template-columns: 1fr; }
+            .glass-card { padding: 1.5rem 1rem; }
+            .service-card { padding: 1.5rem 1rem; }
+            .app-frame { padding: 15px 10px; }
+            .nav-link { font-size: 8px; }
+            .btn-calc { font-size: 0.8rem; padding: 18px 12px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed top-0 w-full z-50 bg-slate-900/90 border-b border-white/5 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 md:px-10 py-4 md:py-6 flex justify-between items-center">
+            <div class="text-2xl md:text-3xl font-black tracking-tighter">
+                <span class="text-red-500">MEDi</span><span class="text-green-500">US</span>
+            </div>
+            <div class="hidden lg:flex space-x-8 md:space-x-12">
+                <a onclick="showPage('home')" id="nav-home" class="nav-link active">Beranda</a>
+                <a onclick="showPage('mizaj')" id="nav-mizaj" class="nav-link">Mizaj</a>
+                <a onclick="showPage('juz')" id="nav-juz" class="nav-link">Juz Diri</a>
+                <a onclick="showPage('asma')" id="nav-asma" class="nav-link">Asma Diri</a>
+                <a onclick="showPage('layanan')" id="nav-layanan" class="nav-link">Layanan</a>
+            </div>
+            <div class="flex items-center gap-3">
+                <button onclick="toggleMobileMenu()" class="lg:hidden text-white text-xl md:text-2xl p-2 hover:bg-white/10 rounded-lg transition">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <button onclick="showPage('app')" class="hidden lg:block bg-yellow-500 text-slate-900 px-6 md:px-10 py-2 md:py-3 rounded-full text-[10px] md:text-[11px] font-black hover:bg-white transition uppercase tracking-widest">Cek Sistem</button>
+            </div>
+        </div>
+        <div id="mobileMenu" class="hidden lg:hidden bg-slate-900/95 border-t border-white/5">
+            <div class="px-4 py-6 space-y-3">
+                <a onclick="showPage('home'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition py-3 px-4 hover:bg-white/5 rounded-lg text-sm font-medium">Beranda</a>
+                <a onclick="showPage('mizaj'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition py-3 px-4 hover:bg-white/5 rounded-lg text-sm font-medium">Mizaj</a>
+                <a onclick="showPage('juz'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition py-3 px-4 hover:bg-white/5 rounded-lg text-sm font-medium">Juz Diri</a>
+                <a onclick="showPage('asma'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition py-3 px-4 hover:bg-white/5 rounded-lg text-sm font-medium">Asma Diri</a>
+                <a onclick="showPage('layanan'); toggleMobileMenu()" class="block text-white hover:text-yellow-500 transition py-3 px-4 hover:bg-white/5 rounded-lg text-sm font-medium">Layanan</a>
+                <button onclick="showPage('app'); toggleMobileMenu()" class="w-full bg-yellow-500 text-slate-900 px-4 py-3 rounded-full text-[10px] font-black hover:bg-white transition uppercase tracking-widest mt-4">Cek Sistem</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-48 pb-32 px-10 max-w-7xl mx-auto">
+
+        <section id="home" class="page-content active">
+            <div class="text-center">
+                <div class="float-animation mb-8">
+                    <h1 class="text-9xl font-black mb-6 tracking-tighter">
+                        <span class="text-red-500">MEDi</span><span class="text-green-500">US</span>
+                    </h1>
+                </div>
+                <p class="text-3xl font-serif italic text-yellow-500/70 mb-12 slide-animation">"Mengenal Energi Diri untuk Sehat"</p>
+                
+                <div class="glow-animation inline-block mb-20">
+                    <a href="https://www.facebook.com/share/r/1WZAj1bdFr/" target="_blank" class="inline-flex items-center gap-4 px-10 py-4 bg-blue-600/20 border border-blue-500/40 rounded-full text-xs font-black hover:bg-blue-600 transition tracking-ultra uppercase">
+                        <i class="fa-brands fa-facebook text-2xl"></i> Tonton Video Pengenalan
+                    </a>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div onclick="showPage('mizaj')" class="glass-card cursor-pointer group hover:bg-white/5 slide-animation" style="animation-delay: 0.1s;">
+                        <div class="relative">
+                            <i class="fa-solid fa-fire-glow text-5xl text-red-500 mb-6 group-hover:scale-110 transition float-animation"></i>
+                            <div class="absolute -top-2 -right-2 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                        </div>
+                        <h3 class="font-black text-xs uppercase tracking-widest">Peta Mizaj</h3>
+                        <p class="text-[10px] opacity-50 mt-2 uppercase tracking-widest">Analisis Elemen</p>
+                    </div>
+                    <div onclick="showPage('juz')" class="glass-card cursor-pointer group hover:bg-white/5 slide-animation" style="animation-delay: 0.2s;">
+                        <div class="relative">
+                            <i class="fa-solid fa-microchip text-5xl text-green-500 mb-6 group-hover:scale-110 transition float-animation"></i>
+                            <div class="absolute -top-2 -right-2 w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        </div>
+                        <h3 class="font-black text-xs uppercase tracking-widest">OS Juz Diri</h3>
+                        <p class="text-[10px] opacity-50 mt-2 uppercase tracking-widest">Sistem Operasi</p>
+                    </div>
+                    <div onclick="showPage('asma')" class="glass-card cursor-pointer group hover:bg-white/5 slide-animation" style="animation-delay: 0.3s;">
+                        <div class="relative">
+                            <i class="fa-solid fa-shield-halved text-5xl text-blue-400 mb-6 group-hover:scale-110 transition float-animation"></i>
+                            <div class="absolute -top-2 -right-2 w-3 h-3 bg-blue-400 rounded-full animate-pulse"></div>
+                        </div>
+                        <h3 class="font-black text-xs uppercase tracking-widest">Anti Virus Asma Diri</h3>
+                        <p class="text-[10px] opacity-50 mt-2 uppercase tracking-widest">Proteksi Energi</p>
+                    </div>
+                    <div onclick="showPage('app')" class="glass-card bg-yellow-500/5 border-yellow-500/30 cursor-pointer glow-animation slide-animation" style="animation-delay: 0.4s;">
+                        <div class="relative">
+                            <i class="fa-solid fa-bolt text-5xl text-yellow-500 mb-6 animate-pulse"></i>
+                            <div class="absolute -top-2 -right-2 w-3 h-3 bg-yellow-500 rounded-full animate-ping"></div>
+                        </div>
+                        <h3 class="font-black text-xs uppercase tracking-widest text-yellow-500">Analisis Sekarang</h3>
+                        <p class="text-[10px] opacity-50 mt-2 uppercase tracking-widest">Cek Gratis</p>
+                    </div>
+                </div>
+
+                <!-- Statistics Section -->
+                <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-yellow-500 mb-2">30+</div>
+                        <p class="text-xs opacity-60 uppercase tracking-widest">Tipe Juz Diri</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-green-500 mb-2">4</div>
+                        <p class="text-xs opacity-60 uppercase tracking-widest">Elemen Mizaj</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-blue-400 mb-2">99</div>
+                        <p class="text-xs opacity-60 uppercase tracking-widest">Asmaul Husna</p>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-4xl font-black text-red-500 mb-2">24/7</div>
+                        <p class="text-xs opacity-60 uppercase tracking-widest">Energi Aktif</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="juz" class="page-content">
+            <div class="max-w-4xl mx-auto centris">
+                <h2 class="text-4xl font-black mb-12 uppercase tracking-ultra text-green-500">Juz Diri</h2>
+                <div class="glass-card">
+                    <h3 class="text-2xl font-black mb-8 uppercase text-yellow-500">Operating System (OS) Sistem Energi Manusia</h3>
+                    <p class="text-xl opacity-80 leading-relaxed mb-10">
+                        Manusia memiliki 30 tipe Juz Diri yang bertindak sebagai Sistem Operasi (OS) Energi Utama manusia. Layaknya perangkat teknologi, OS ini menentukan bagaimana Anda memproses data kehidupan, merespon masalah, dan mengoptimalkan potensi sukses.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-8 text-center">
+                        <div class="p-8 bg-white/5 rounded-3xl border border-green-500/20">
+                            <i class="fa-solid fa-fingerprint text-3xl text-green-400 mb-4"></i>
+                            <h4 class="font-black text-xs mb-2 uppercase">Identifikasi</h4>
+                            <p class="text-[10px] opacity-50 uppercase tracking-widest">Cek Pola Dasar</p>
+                        </div>
+                        <div class="p-8 bg-white/5 rounded-3xl border border-green-500/20">
+                            <i class="fa-solid fa-broom text-3xl text-green-400 mb-4"></i>
+                            <h4 class="font-black text-xs mb-2 uppercase">Detoks</h4>
+                            <p class="text-[10px] opacity-50 uppercase tracking-widest">Bersihkan Threats</p>
+                        </div>
+                        <div class="p-8 bg-white/5 rounded-3xl border border-green-500/20">
+                            <i class="fa-solid fa-bolt-lightning text-3xl text-green-400 mb-4"></i>
+                            <h4 class="font-black text-xs mb-2 uppercase">Aktivasi</h4>
+                            <p class="text-[10px] opacity-50 uppercase tracking-widest">Optimasi Sistem</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="asma" class="page-content">
+            <div class="max-w-4xl mx-auto centris">
+                <h2 class="text-4xl font-black mb-12 uppercase tracking-ultra text-blue-400">Asma Diri</h2>
+                <div class="glass-card border-blue-500/20">
+                    <i class="fa-solid fa-shield-halved text-7xl text-blue-400 mb-10"></i>
+                    <h3 class="text-2xl font-black mb-8 uppercase text-yellow-500">Anti-Virus & Proteksi Diri</h3>
+                    <p class="text-xl opacity-80 leading-relaxed mb-8">
+                        Meditasi Asma Diri adalah Aktivasi Sistem Anti Virus melalui resonansi 1 atau lebih dari nama nama Allah (Asmaul Husna) yang selaras vibrasinya dengan vibrasi nama Anda.
+                    </p>
+                    <p class="text-lg opacity-60 italic leading-relaxed">
+                        Metode ini berfungsi sebagai "Perisai Energi" yang menetralisir beban negatif (Threats) dan meningkatkan daya resonansi keberuntungan dalam hidup Anda.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="mizaj" class="page-content">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-4xl font-black text-center mb-16 uppercase tracking-ultra text-red-500">Peta Mizaj</h2>
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+                    <div class="mizaj-grid">
+                        <div class="mizaj-box bg-red-600">Koleris</div>
+                        <div class="mizaj-box bg-yellow-500 text-slate-900">Sanguinis</div>
+                        <div class="mizaj-box bg-slate-600">Melankolis</div>
+                        <div class="mizaj-box bg-blue-600">Plegmatis</div>
+                    </div>
+                    <div class="glass-card centris">
+                        <h3 class="text-2xl font-black mb-6 uppercase text-yellow-500">Energi Elemen</h3>
+                        <p class="text-lg opacity-70 leading-relaxed mb-6">Konsep Mizaj yang dikembangkan Ibnu Sina memetakan kondisi energi dasar manusia. yaitu : Panas, Dingin, Kering, dan Lembab.</p>
+                        <p class="text-lg opacity-70 leading-relaxed">Keseimbangan keempat elemen ini adalah kunci dari kesehatan fisik yang prima dan stabilitas emosi yang kokoh.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="app" class="page-content">
+            <div class="text-center mb-8 md:mb-12">
+                <h2 class="text-3xl md:text-4xl font-black uppercase tracking-ultra text-yellow-500">System Analysis</h2>
+                <p class="text-sm opacity-60 mt-2 tracking-widest uppercase">Analisis Energi Diri Anda</p>
+            </div>
+            <div class="app-frame centris">
+                <div class="mb-6">
+                    <p class="text-xs opacity-50 uppercase tracking-widest mb-4">Masukkan Tanggal Lahir Anda</p>
+                    <div class="grid grid-cols-3 gap-4 md:gap-6 mb-6">
+                        <div class="relative">
+                            <input type="number" id="tgl" placeholder="Tanggal" class="input-field w-full" min="1" max="31" maxlength="2">
+                            <label class="absolute -top-2 left-3 text-xs text-yellow-500/60 bg-slate-900 px-1">TGL</label>
+                        </div>
+                        <div class="relative">
+                            <input type="number" id="bln" placeholder="Bulan" class="input-field w-full" min="1" max="12" maxlength="2">
+                            <label class="absolute -top-2 left-3 text-xs text-yellow-500/60 bg-slate-900 px-1">BLN</label>
+                        </div>
+                        <div class="relative">
+                            <input type="number" id="thn" placeholder="Tahun" class="input-field w-full" min="1900" max="2026" maxlength="4">
+                            <label class="absolute -top-2 left-3 text-xs text-yellow-500/60 bg-slate-900 px-1">THN</label>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="prosesHitung()" class="btn-calc w-full relative overflow-hidden group">
+                    <span class="relative z-10">Jalankan Analisis</span>
+                    <div class="absolute inset-0 bg-gradient-to-r from-red-500 to-yellow-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                </button>
+                
+                <div id="app-result" class="hidden mt-8 md:mt-12 p-6 md:p-12 bg-black rounded-[30px] md:rounded-[40px] border-2 border-yellow-500/50 shadow-2xl">
+                    <div class="text-center">
+                        <div id="res-juz" class="text-4xl md:text-7xl font-black mb-2 text-white tracking-tighter"></div>
+                        <div id="res-os" class="text-xs md:text-sm font-black text-yellow-500 uppercase tracking-[0.2em] md:tracking-[0.4em] mb-6 md:mb-10"></div>
+                        <div class="h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent w-full mb-6 md:mb-10"></div>
+                        <p id="res-desc" class="text-sm md:text-xl text-white font-bold leading-relaxed italic max-w-lg mx-auto"></p>
+                        <div class="mt-6 flex justify-center gap-4">
+                            <button onclick="shareResult()" class="px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-full text-xs font-black hover:bg-green-500 transition">
+                                <i class="fa-brands fa-whatsapp mr-2"></i>Share
+                            </button>
+                            <button onclick="resetForm()" class="px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-full text-xs font-black hover:bg-red-500 transition">
+                                <i class="fa-solid fa-redo mr-2"></i>Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="layanan" class="page-content">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black uppercase tracking-ultra text-yellow-500">Promo Ramadhan Sehat</h2>
+                <p class="text-sm opacity-60 mt-4 tracking-widest uppercase">Optimasi Energi di Bulan Suci - MEDiUS</p>
+            </div>
+
+            <div class="mb-20">
+                <h3 class="text-xl font-black mb-8 border-l-4 border-green-500 pl-4 uppercase tracking-widest">Layanan Gratis</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="service-card group">
+                        <div>
+                            <i class="fa-solid fa-fingerprint text-5xl text-green-500 mb-6"></i>
+                            <h4 class="font-black uppercase mb-4 text-sm">1. Cek OS Sistem Energi Manusia</h4>
+                            <p class="text-[11px] opacity-60 leading-loose uppercase">Analisis Kepribadian Qurani dengan input Tanggal Lahir.</p>
+                        </div>
+                        <button onclick="showPage('app')" class="btn-order mt-6">CEK GRATIS</button>
+                    </div>
+                    <div class="service-card group">
+                        <div>
+                            <i class="fa-solid fa-shield-virus text-5xl text-red-500 mb-6"></i>
+                            <h4 class="font-black uppercase mb-4 text-sm">2. Cek Threat (Level Ancaman) Energi Tubuh</h4>
+                            <p class="text-[11px] opacity-60 leading-loose uppercase">Cek energi negatif via Nama Lengkap (Gratis – Perhari 1x per akun).</p>
+                        </div>
+                        <a href="https://wa.me/6282120619478" class="btn-order mt-6">HUBUNGI ADMIN</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-20">
+                <h3 class="text-xl font-black mb-8 border-l-4 border-yellow-500 pl-4 uppercase tracking-widest">Layanan Berbayar (Promo)</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">3. Vibrasi Zona Asma untuk mengetahui Peran Hidup Seseorang</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Cek Energi Nama - Peran Hidup Manusia (Input Nama)</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">50K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">4. Analisis Chakra Dominan untuk mengetahui kekuatan diri</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Analisis via Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">50K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">5. Analisis Kekuatan Bakat Bawaan Genetis Potensi Ledership </h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Analisis via Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">100K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">6. Asma Diri (Anti Virus)</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Analisis Sistem Anti Virus Manusia via Nama Lengkap</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">50K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">7. Potensi Aura Kepribadian & Bakat</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">100K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">8. Tipe Energi (Mizaj)</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">100K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-black mb-8 border-l-4 border-red-500 pl-4 uppercase tracking-widest">Training Online (Bonus Besar)</h3>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="service-card group bg-red-500/5 border-red-500/20">
+                        <div class="text-left">
+                            <h4 class="font-black uppercase mb-4 text-red-500 text-sm">9. Membaca Potensi Orang berbasis Qur'an </h4>
+                            <p class="text-[10px] opacity-70 mb-4 uppercase tracking-widest leading-relaxed">
+                                • Training Membaca Potensi Berbasis Quran Hanya 1 Menit <br>
+                                • Bonus Buku Digital "About You In Quran" (200 Hlm)<br>
+                                • Akses Web App & Channel Telegram
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-black mb-6">300K</div>
+                            <a href="https://wa.me/6282120619478" class="btn-order bg-red-600 border-none hover:bg-white hover:text-red-600">DAFTAR</a>
+                        </div>
+                    </div>
+
+                    <div class="service-card group bg-blue-500/5 border-blue-500/20">
+                        <div class="text-left">
+                            <h4 class="font-black uppercase mb-4 text-blue-400 text-sm">10. Training Meditasi MEDiUS</h4>
+                            <p class="text-[10px] opacity-70 mb-4 uppercase tracking-widest leading-relaxed">
+                                (Meditasi Juz Diri & Asma Diri) untuk recovery system tubuh dan aktivasi sistem anti virus tubuh.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-black mb-6">200K</div>
+                            <a href="https://wa.me/6282120619478" class="btn-order bg-blue-600 border-none hover:bg-white hover:text-blue-600">DAFTAR</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-24 border-t border-white/5 text-center text-[11px] opacity-20 tracking-ultra uppercase font-black relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-yellow-500/5 to-transparent"></div>
+        <div class="relative z-10">
+            <div class="mb-8">
+                <div class="inline-flex items-center gap-4 mb-4">
+                    <div class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                    <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse" style="animation-delay: 0.5s;"></div>
+                    <div class="w-2 h-2 bg-yellow-500 rounded-full animate-pulse" style="animation-delay: 1s;"></div>
+                </div>
+            </div>
+            <div class="mb-4">MEDiUS-eb2026-abahagus</div>
+            <div class="text-[10px] opacity-40">© 2026 MEDiUS Personal Energy System. All rights reserved.</div>
+            <div class="mt-6 flex justify-center gap-6">
+                <a href="https://www.facebook.com/share/r/1WZAj1bdFr/" target="_blank" class="hover:text-yellow-500 transition">
+                    <i class="fa-brands fa-facebook text-lg"></i>
+                </a>
+                <a href="https://wa.me/6282120619478" target="_blank" class="hover:text-yellow-500 transition">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                </a>
+                <a href="#" class="hover:text-yellow-500 transition">
+                    <i class="fa-solid fa-envelope text-lg"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-slate-900 z-50 flex items-center justify-center" style="display: none;">
+        <div class="text-center">
+            <div class="text-6xl font-black mb-4 tracking-tighter">
+                <span class="text-red-500">MEDi</span><span class="text-green-500">US</span>
+            </div>
+            <div class="flex justify-center gap-2 mb-4">
+                <div class="w-3 h-3 bg-red-500 rounded-full animate-bounce"></div>
+                <div class="w-3 h-3 bg-green-500 rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
+                <div class="w-3 h-3 bg-yellow-500 rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
+            </div>
+            <p class="text-sm opacity-60 uppercase tracking-widest">Loading Energy System...</p>
+        </div>
+    </div>
+
+    <script>
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading screen if it exists
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                }, 1000);
+            }
+            
+            // Add smooth scroll behavior
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+
+        function showPage(pageId) {
+            // Show loading animation
+            const loadingScreen = document.getElementById('loadingScreen');
+            if (loadingScreen) {
+                loadingScreen.style.display = 'flex';
+            }
+            
+            // Simulate loading time for professional feel
+            setTimeout(() => {
+                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+                document.getElementById(pageId).classList.add('active');
+                document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+                const activeNav = document.getElementById('nav-' + pageId);
+                if(activeNav) activeNav.classList.add('active');
+                window.scrollTo({top: 0, behavior: 'smooth'});
+                
+                // Hide loading screen
+                if (loadingScreen) {
+                    loadingScreen.style.display = 'none';
+                }
+            }, 300);
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        const osTitles = {
+            1: "OS Target Runner", 2: "OS Driver", 3: "OS Core Responsibility", 4: "OS Relator", 5: "OS Loyal Core",
+            6: "OS Explorer", 7: "OS Knowledge Engine", 8: "OS Warrior Mode", 9: "OS Resilient Fighter", 10: "OS Vision Accelerator",
+            11: "OS System Architect", 12: "OS Strategic Mastermind", 13: "OS Creative Designer", 14: "OS Humanitarian Activist", 15: "OS Creative Generator",
+            16: "OS System Guardian", 17: "OS Star Performer", 18: "OS Caregiver", 19: "OS Inspirer", 20: "OS Network Builder",
+            21: "OS Communicator Leader", 22: "OS Stage Performer", 23: "OS Idealist Protector", 24: "OS Insight Observer", 25: "OS Analytical Thinker",
+            26: "OS Dominant Executor", 27: "OS System Builder", 28: "OS Vision Motivator", 29: "OS Natural Leader", 30: "OS System Controller"
+        };
+
+        const personalityData = {
+            1: "Pribadi yang sangat futuristik, pekerja keras, supel, eksploratif dan success oriented. Umumnya ambisinya sangat besar dan sulit dibendung keinginannya.",
+            2: "Pribadi yang ulet, pekerja keras, mengendalikan, memiliki skill yang bisa diandalkan dan energik. Tipe ini tulus dan mudah berbagi.",
+            3: "Pribadi yang ulet, pekerja keras, responsible, rasional dan eksplorer serta tulus dalam melayani sesama. Bagi tipe ini keluarga adalah segalanya.",
+            4: "Pribadi yang sangat sensitif, sering mengedepankan perasaan, peduli, ramah dan hangat dalam berinteraksi. Tipe ini sangat bertanggung jawab.",
+            5: "Pribadi yang low profil atau pendiam diawal penampilannya, sensitif, ramah, peduli, loyal, dan sangat humanis.",
+            6: "Pribadi yang optimis, easygoing, keras keinginan, ramah, peduli, melayani dan menikmati jika bersama banyak orang.",
+            7: "Pribadi yang haus pengetahuan, pembelajar, selalu mengamati untuk memenuhi dahaga intelektualnya. Tipe ini sangat kritis dan sistematis.",
+            8: "Pribadi yang energik, keras keinginan, mobilitasnya yang tinggi, menikmati kegiatan outdoor. Ambisinya sangat besar.",
+            9: "Pribadi yang energik, mobilitasnya yang tinggi, menikmati kegiatan outdoor dan cenderung introspektif. Minat pada spiritualitas tinggi.",
+            10: "Tipe aktifis dengan semangat tinggi, mobilitas tinggi, bergerak cepat namun cenderung tergesa-gesa. Menyukai kegiatan outdoor.",
+            11: "Memiliki skill yang bisa diandalkan serta berbakat dalam mengendalikan orang lain. Berani mengambil resiko demi prestasi.",
+            12: "Berupaya perfeks, berpikir jangka panjang dan penuh perhitungan. Berbakat memimpin namun sangat sensitif terhadap tekanan.",
+            13: "Energik, ekspresif, sensitif, dan keras keinginan dalam mengejar target. Menyukai keindahan dan seni.",
+            14: "Aktif, humanis, rasional, berani dan loyal. Mudah berbagi dan berani berkorban demi kemanusiaan. Pribadinya sangat bijak.",
+            15: "Keras keinginan, kreatif, tabah, dan memiliki minat spiritualitas yang kuat. Cenderung keras kepala dan sering menunda pekerjaan.",
+            16: "Pendiam di awal, keras keinginan, berorientasi kemanfaatan dan bijak. Tegas dalam bekerja dan penuh perhitungan.",
+            17: "Energik dan humanis dengan selera seni tinggi. Bergerak cepat, spontan, dan ekspresif karena ingin populer.",
+            18: "Ramah, terbuka, kritis, analitis dan mengayomi. Memiliki sifat alami yang hangat dan lapang dada.",
+            19: "Energik, mudah bersosialisasi, kritis, dan cakap dalam berkomunikasi baik lisan maupun tulisan.",
+            20: "Pendiam di awal namun sangat mumpuni dalam membangun jaringan (networking). Memiliki tekad yang sangat keras.",
+            21: "Sangat informatif dan berbakat alami menjadi pemimpin yang mendominasi. Menyukai kelompok dan interaksi sosial.",
+            22: "Humanis, kreatif, dan suka menarik perhatian. Sangat sensitif dan peduli pada sesama.",
+            23: "Loyal dan bahagia jika bisa bermanfaat bagi orang lain. Hidup teratur, protektif, dan memiliki minat besar pada spiritualitas.",
+            24: "Memiliki firasat tajam, analitis, dan blak-blakan. Ingatannya sangat kuat dan didominasi oleh kecerdasan intelektual.",
+            25: "Kritis, intelektual, pembelajar dan argumentatif. Sangat menyukai keindahan dan seni. Terbuka pada hal-hal baru.",
+            26: "Pendiam di awal namun memiliki ambisi target yang luar biasa keras. Handal dalam berbahasa dan adaptasi.",
+            27: "Supel, kokoh, dan handal dalam membangun sistem. Memiliki kepedulian sosial yang tinggi.",
+            28: "Energik, ekspresif, dan sangat inspiratif dalam berkomunikasi. Memiliki visi jauh ke depan dan optimis.",
+            29: "Pionir penggerak dengan mobilitas tinggi dan bakat pemimpin alami. Visi jauh ke depan dan pantang menyerah.",
+            30: "Sangat menonjol dalam manajemen komunitas. Penuh semangat, rasional, dan mengayomi. Bakat kepemimpinannya alami."
+        };
+
+        const n_tgl_thn = { "1":37,"2":45,"3":28,"4":30,"5":32,"6":30,"7":32,"8":34,"9":37,"10":26,"11":31,"12":19,"13":41,"14":30,"15":34,"16":21,"17":27,"18":16,"19":44,"20":26,"21":54,"22":27,"23":24,"24":30,"25":18,"26":25,"27":37,"28":43,"29":28,"30":38,"31":38 };
+        const n_bln = { "1":35,"2":43,"3":26,"4":28,"5":30,"6":28,"7":30,"8":32,"9":35,"10":24,"11":29,"12":17 };
+
+        function prosesHitung() {
+            const t = document.getElementById("tgl").value;
+            const b = document.getElementById("bln").value;
+            const thInput = document.getElementById("thn").value;
+            if(!t || !b || !thInput) { 
+                // Mobile-friendly alert
+                if (window.innerWidth <= 768) {
+                    const resultDiv = document.getElementById("app-result");
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.innerHTML = `
+                        <div class="text-center p-6">
+                            <i class="fa-solid fa-exclamation-triangle text-4xl text-yellow-500 mb-4"></i>
+                            <p class="text-lg text-white font-bold mb-4">Input harus lengkap!</p>
+                            <p class="text-sm opacity-70">Silakan masukkan tanggal, bulan, dan tahun lahir Anda.</p>
+                            <button onclick="resetForm()" class="mt-4 px-4 py-2 bg-red-500 text-white rounded-full text-xs font-black">OK</button>
+                        </div>
+                    `;
+                    return;
+                } else {
+                    alert("Input harus lengkap!"); 
+                    return;
+                }
+            }
+            let h_th = 0; let temp = parseInt(thInput);
+            while (temp > 0) { h_th += temp % 10; temp = Math.floor(temp / 10); }
+            let res = (n_tgl_thn[t] || 0) + (n_bln[b] || 0) + (n_tgl_thn[h_th] || 0) - 19;
+            while (res > 30) res -= 30;
+            if (res < 1) res = 1;
+            document.getElementById("app-result").classList.remove('hidden');
+            document.getElementById("res-juz").innerText = "JUZ " + res;
+            document.getElementById("res-os").innerText = osTitles[res];
+            document.getElementById("res-desc").innerText = personalityData[res];
+            document.getElementById("app-result").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function shareResult() {
+            const juz = document.getElementById("res-juz").innerText;
+            const os = document.getElementById("res-os").innerText;
+            const text = `Hasil Analisis MEDiUS:\n${juz}\n${os}\n\nCek energi diri Anda di MEDiUS Personal Energy System!`;
+            const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(text)}`;
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function resetForm() {
+            document.getElementById("tgl").value = "";
+            document.getElementById("bln").value = "";
+            document.getElementById("thn").value = "";
+            document.getElementById("app-result").classList.add('hidden');
+            // Reset to original result display
+            const resultDiv = document.getElementById("app-result");
+            resultDiv.innerHTML = `
+                <div id="res-juz" class="text-4xl md:text-7xl font-black mb-2 text-white tracking-tighter"></div>
+                <div id="res-os" class="text-xs md:text-sm font-black text-yellow-500 uppercase tracking-[0.2em] md:tracking-[0.4em] mb-6 md:mb-10"></div>
+                <div class="h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent w-full mb-6 md:mb-10"></div>
+                <p id="res-desc" class="text-sm md:text-xl text-white font-bold leading-relaxed italic max-w-lg mx-auto"></p>
+                <div class="mt-6 flex justify-center gap-4">
+                    <button onclick="shareResult()" class="px-4 py-2 bg-green-500/20 border border-green-500/40 rounded-full text-xs font-black hover:bg-green-500 transition">
+                        <i class="fa-brands fa-whatsapp mr-2"></i>Share
+                    </button>
+                    <button onclick="resetForm()" class="px-4 py-2 bg-red-500/20 border border-red-500/40 rounded-full text-xs font-black hover:bg-red-500 transition">
+                        <i class="fa-solid fa-redo mr-2"></i>Reset
+                    </button>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

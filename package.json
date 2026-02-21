@@ -1,0 +1,32 @@
+{
+  "name": "medius-qur-an",
+  "version": "1.0.0",
+  "description": "MEDiUS - Personal Energy System. Mengenal Energi Diri untuk Sehat dengan analisis Juz Diri, Mizaj, dan Asma Diri berbasis Al-Qur'an.",
+  "main": "index.html",
+  "scripts": {
+    "start": "serve -s .",
+    "build": "echo 'No build step required for static site'",
+    "dev": "serve -s . -l 3000"
+  },
+  "keywords": [
+    "personal-energy",
+    "quran",
+    "meditation",
+    "health",
+    "juz-diri",
+    "mizaj",
+    "asma-diri",
+    "islamic-healing"
+  ],
+  "author": "MEDiUS Team",
+  "license": "MIT",
+  "dependencies": {
+    "serve": "^14.2.1"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wirosableng218/medius-qur-an.git"
+  },
+  "homepage": "https://medius-qur-an.vercel.app"
+}
