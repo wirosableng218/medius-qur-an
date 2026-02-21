@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEDiUS - Personal Energy System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;700;900&family=Playfair+Display:italic,wght@700&display=swap');
+        
+        body { font-family: 'Montserrat', sans-serif; background-color: #0f172a; color: white; overflow-x: hidden; }
+        
+        /* Navigasi Mewah */
+        .nav-link { cursor: pointer; transition: 0.3s; position: relative; padding: 10px 0; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+        .nav-link::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: #f59e0b; transition: 0.3s; }
+        .nav-link.active { color: #f59e0b; }
+        .nav-link.active::after { width: 100%; }
+
+        /* Page System */
+        .page-content { display: none; min-height: 85vh; opacity: 0; transform: translateY(30px); transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .page-content.active { display: block; opacity: 1; transform: translateY(0); }
+
+        /* Glassmorphism Cards */
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(20px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 35px; 
+            padding: 3.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Mizaj Visual (Diamond) */
+        .mizaj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 300px; height: 300px; transform: rotate(45deg); margin: 60px auto; }
+        .mizaj-box { display: flex; align-items: center; justify-content: center; transform: rotate(-45deg); font-weight: 900; font-size: 12px; color: white; border-radius: 18px; text-align: center; box-shadow: 0 15px 30px rgba(0,0,0,0.3); }
+
+        /* Service Cards (Mewah & Lebar) */
+        .service-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 40px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 400px;
+        }
+        .service-card:hover { transform: translateY(-15px); background: rgba(255, 255, 255, 0.07); border-color: rgba(245, 158, 11, 0.4); }
+        
+        .btn-order {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 16px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            width: 100%;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .btn-order:hover { background: #fff; color: #000; transform: scale(1.05); }
+
+        /* MODIFIKASI KHUSUS APLIKASI JUZ */
+        .app-frame { 
+            max-width: 650px; 
+            margin: 0 auto; 
+            background: #000000; 
+            border-radius: 50px; 
+            padding: 50px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8); 
+        }
+        .input-field { 
+            width: 100%; 
+            background: #000000; 
+            border: 2px solid rgba(255,255,255,0.2); 
+            padding: 20px; 
+            border-radius: 20px; 
+            color: #ffffff; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-size: 1.5rem; 
+            font-weight: 900; 
+            transition: all 0.3s ease;
+        }
+        .input-field:focus { 
+            border-color: #f59e0b; 
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); 
+            outline: none; 
+        }
+        .btn-calc { width: 100%; background: #e74c3c; color: white; padding: 22px; border-radius: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 3px; cursor: pointer; transition: 0.3s; }
+        .btn-calc:hover { background: #ff5e4d; transform: scale(1.02); }
+
+        .centris { text-align: center; }
+        .tracking-ultra { letter-spacing: 0.5em; }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed top-0 w-full z-50 bg-slate-900/90 border-b border-white/5 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-10 py-6 flex justify-between items-center">
+            <div class="text-3xl font-black tracking-tighter">
+                <span class="text-red-500">MEDi</span><span class="text-green-500">US</span>
+            </div>
+            <div class="hidden lg:flex space-x-12">
+                <a onclick="showPage('home')" id="nav-home" class="nav-link active">Beranda</a>
+                <a onclick="showPage('mizaj')" id="nav-mizaj" class="nav-link">Mizaj</a>
+                <a onclick="showPage('juz')" id="nav-juz" class="nav-link">Juz Diri</a>
+                <a onclick="showPage('asma')" id="nav-asma" class="nav-link">Asma Diri</a>
+                <a onclick="showPage('layanan')" id="nav-layanan" class="nav-link">Layanan</a>
+            </div>
+            <button onclick="showPage('app')" class="bg-yellow-500 text-slate-900 px-10 py-3 rounded-full text-[11px] font-black hover:bg-white transition uppercase tracking-widest">Cek Sistem</button>
+        </div>
+    </nav>
+
+    <main class="pt-48 pb-32 px-10 max-w-7xl mx-auto">
+
+        <section id="home" class="page-content active">
+            <div class="text-center">
+                <h1 class="text-9xl font-black mb-6 tracking-tighter">
+                    <span class="text-red-500">MEDi</span><span class="text-green-500">US</span>
+                </h1>
+                <p class="text-3xl font-serif italic text-yellow-500/70 mb-12">"Mengenal Energi Diri untuk Sehat"</p>
+                
+                <a href="https://www.facebook.com/share/r/1WZAj1bdFr/" target="_blank" class="inline-flex items-center gap-4 mb-20 px-10 py-4 bg-blue-600/20 border border-blue-500/40 rounded-full text-xs font-black hover:bg-blue-600 transition tracking-ultra uppercase">
+                    <i class="fa-brands fa-facebook text-2xl"></i> Tonton Video Pengenalan
+                </a>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div onclick="showPage('mizaj')" class="glass-card cursor-pointer group hover:bg-white/5">
+                        <i class="fa-solid fa-fire-glow text-5xl text-red-500 mb-6 group-hover:scale-110 transition"></i>
+                        <h3 class="font-black text-xs uppercase tracking-widest">Peta Mizaj</h3>
+                    </div>
+                    <div onclick="showPage('juz')" class="glass-card cursor-pointer group hover:bg-white/5">
+                        <i class="fa-solid fa-microchip text-5xl text-green-500 mb-6 group-hover:scale-110 transition"></i>
+                        <h3 class="font-black text-xs uppercase tracking-widest">OS Juz Diri</h3>
+                    </div>
+                    <div onclick="showPage('asma')" class="glass-card cursor-pointer group hover:bg-white/5">
+                        <i class="fa-solid fa-shield-halved text-5xl text-blue-400 mb-6 group-hover:scale-110 transition"></i>
+                        <h3 class="font-black text-xs uppercase tracking-widest">Anti Virus Asma Diri</h3>
+                    </div>
+                    <div onclick="showPage('app')" class="glass-card bg-yellow-500/5 border-yellow-500/30 cursor-pointer">
+                        <i class="fa-solid fa-bolt text-5xl text-yellow-500 mb-6 animate-pulse"></i>
+                        <h3 class="font-black text-xs uppercase tracking-widest text-yellow-500">Analisis Sekarang</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="juz" class="page-content">
+            <div class="max-w-4xl mx-auto centris">
+                <h2 class="text-4xl font-black mb-12 uppercase tracking-ultra text-green-500">Juz Diri</h2>
+                <div class="glass-card">
+                    <h3 class="text-2xl font-black mb-8 uppercase text-yellow-500">Operating System (OS) Sistem Energi Manusia</h3>
+                    <p class="text-xl opacity-80 leading-relaxed mb-10">
+                        Manusia memiliki 30 tipe Juz Diri yang bertindak sebagai Sistem Operasi (OS) Energi Utama manusia. Layaknya perangkat teknologi, OS ini menentukan bagaimana Anda memproses data kehidupan, merespon masalah, dan mengoptimalkan potensi sukses.
+                    </p>
+                    <div class="grid md:grid-cols-3 gap-8 text-center">
+                        <div class="p-8 bg-white/5 rounded-3xl border border-green-500/20">
+                            <i class="fa-solid fa-fingerprint text-3xl text-green-400 mb-4"></i>
+                            <h4 class="font-black text-xs mb-2 uppercase">Identifikasi</h4>
+                            <p class="text-[10px] opacity-50 uppercase tracking-widest">Cek Pola Dasar</p>
+                        </div>
+                        <div class="p-8 bg-white/5 rounded-3xl border border-green-500/20">
+                            <i class="fa-solid fa-broom text-3xl text-green-400 mb-4"></i>
+                            <h4 class="font-black text-xs mb-2 uppercase">Detoks</h4>
+                            <p class="text-[10px] opacity-50 uppercase tracking-widest">Bersihkan Threats</p>
+                        </div>
+                        <div class="p-8 bg-white/5 rounded-3xl border border-green-500/20">
+                            <i class="fa-solid fa-bolt-lightning text-3xl text-green-400 mb-4"></i>
+                            <h4 class="font-black text-xs mb-2 uppercase">Aktivasi</h4>
+                            <p class="text-[10px] opacity-50 uppercase tracking-widest">Optimasi Sistem</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="asma" class="page-content">
+            <div class="max-w-4xl mx-auto centris">
+                <h2 class="text-4xl font-black mb-12 uppercase tracking-ultra text-blue-400">Asma Diri</h2>
+                <div class="glass-card border-blue-500/20">
+                    <i class="fa-solid fa-shield-halved text-7xl text-blue-400 mb-10"></i>
+                    <h3 class="text-2xl font-black mb-8 uppercase text-yellow-500">Anti-Virus & Proteksi Diri</h3>
+                    <p class="text-xl opacity-80 leading-relaxed mb-8">
+                        Meditasi Asma Diri adalah Aktivasi Sistem Anti Virus melalui resonansi 1 atau lebih dari nama nama Allah (Asmaul Husna) yang selaras vibrasinya dengan vibrasi nama Anda.
+                    </p>
+                    <p class="text-lg opacity-60 italic leading-relaxed">
+                        Metode ini berfungsi sebagai "Perisai Energi" yang menetralisir beban negatif (Threats) dan meningkatkan daya resonansi keberuntungan dalam hidup Anda.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="mizaj" class="page-content">
+            <div class="max-w-5xl mx-auto">
+                <h2 class="text-4xl font-black text-center mb-16 uppercase tracking-ultra text-red-500">Peta Mizaj</h2>
+                <div class="grid lg:grid-cols-2 gap-20 items-center">
+                    <div class="mizaj-grid">
+                        <div class="mizaj-box bg-red-600">Koleris</div>
+                        <div class="mizaj-box bg-yellow-500 text-slate-900">Sanguinis</div>
+                        <div class="mizaj-box bg-slate-600">Melankolis</div>
+                        <div class="mizaj-box bg-blue-600">Plegmatis</div>
+                    </div>
+                    <div class="glass-card centris">
+                        <h3 class="text-2xl font-black mb-6 uppercase text-yellow-500">Energi Elemen</h3>
+                        <p class="text-lg opacity-70 leading-relaxed mb-6">Konsep Mizaj yang dikembangkan Ibnu Sina memetakan kondisi energi dasar manusia. yaitu : Panas, Dingin, Kering, dan Lembab.</p>
+                        <p class="text-lg opacity-70 leading-relaxed">Keseimbangan keempat elemen ini adalah kunci dari kesehatan fisik yang prima dan stabilitas emosi yang kokoh.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="app" class="page-content">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-black uppercase tracking-ultra text-yellow-500">System Analysis</h2>
+            </div>
+            <div class="app-frame centris">
+                <div class="grid grid-cols-3 gap-6 mb-8">
+                    <input type="number" id="tgl" placeholder="TGL" class="input-field">
+                    <input type="number" id="bln" placeholder="BLN" class="input-field">
+                    <input type="number" id="thn" placeholder="THN" class="input-field">
+                </div>
+                <button onclick="prosesHitung()" class="btn-calc">Jalankan Analisis</button>
+                
+                <div id="app-result" class="hidden mt-12 p-12 bg-black rounded-[40px] border-2 border-yellow-500/50 shadow-2xl">
+                    <div id="res-juz" class="text-7xl font-black mb-2 text-white tracking-tighter"></div>
+                    <div id="res-os" class="text-sm font-black text-yellow-500 uppercase tracking-[0.4em] mb-10"></div>
+                    <div class="h-px bg-gradient-to-r from-transparent via-yellow-500 to-transparent w-full mb-10"></div>
+                    <p id="res-desc" class="text-xl text-white font-bold leading-relaxed italic max-w-xl mx-auto"></p>
+                </div>
+            </div>
+        </section>
+
+        <section id="layanan" class="page-content">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-black uppercase tracking-ultra text-yellow-500">Promo Ramadhan Sehat</h2>
+                <p class="text-sm opacity-60 mt-4 tracking-widest uppercase">Optimasi Energi di Bulan Suci - MEDiUS</p>
+            </div>
+
+            <div class="mb-20">
+                <h3 class="text-xl font-black mb-8 border-l-4 border-green-500 pl-4 uppercase tracking-widest">Layanan Gratis</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="service-card group">
+                        <div>
+                            <i class="fa-solid fa-fingerprint text-5xl text-green-500 mb-6"></i>
+                            <h4 class="font-black uppercase mb-4 text-sm">1. Cek OS Sistem Energi Manusia</h4>
+                            <p class="text-[11px] opacity-60 leading-loose uppercase">Analisis Kepribadian Qurani dengan input Tanggal Lahir.</p>
+                        </div>
+                        <button onclick="showPage('app')" class="btn-order mt-6">CEK GRATIS</button>
+                    </div>
+                    <div class="service-card group">
+                        <div>
+                            <i class="fa-solid fa-shield-virus text-5xl text-red-500 mb-6"></i>
+                            <h4 class="font-black uppercase mb-4 text-sm">2. Cek Threat (Level Ancaman) Energi Tubuh</h4>
+                            <p class="text-[11px] opacity-60 leading-loose uppercase">Cek energi negatif via Nama Lengkap (Gratis – Perhari 1x per akun).</p>
+                        </div>
+                        <a href="https://wa.me/6282120619478" class="btn-order mt-6">HUBUNGI ADMIN</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-20">
+                <h3 class="text-xl font-black mb-8 border-l-4 border-yellow-500 pl-4 uppercase tracking-widest">Layanan Berbayar (Promo)</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">3. Vibrasi Zona Asma untuk mengetahui Peran Hidup Seseorang</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Cek Energi Nama - Peran Hidup Manusia (Input Nama)</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">50K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">4. Analisis Chakra Dominan untuk mengetahui kekuatan diri</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Analisis via Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">50K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">5. Analisis Kekuatan Bakat Bawaan Genetis Potensi Ledership </h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Analisis via Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">100K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">6. Asma Diri (Anti Virus)</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Analisis Sistem Anti Virus Manusia via Nama Lengkap</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">50K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">7. Potensi Aura Kepribadian & Bakat</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">100K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                    <div class="service-card group">
+                        <h4 class="font-black uppercase mb-4 text-[12px]">8. Tipe Energi (Mizaj)</h4>
+                        <p class="text-[10px] opacity-50 mb-6 uppercase">Input Tanggal Lahir</p>
+                        <div class="text-3xl font-black mb-6 text-yellow-500">100K</div>
+                        <a href="https://wa.me/6282120619478" class="btn-order">ORDER NOW</a>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <h3 class="text-xl font-black mb-8 border-l-4 border-red-500 pl-4 uppercase tracking-widest">Training Online (Bonus Besar)</h3>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <div class="service-card group bg-red-500/5 border-red-500/20">
+                        <div class="text-left">
+                            <h4 class="font-black uppercase mb-4 text-red-500 text-sm">9. Membaca Potensi Orang berbasis Qur'an </h4>
+                            <p class="text-[10px] opacity-70 mb-4 uppercase tracking-widest leading-relaxed">
+                                • Training Membaca Potensi Berbasis Quran Hanya 1 Menit <br>
+                                • Bonus Buku Digital "About You In Quran" (200 Hlm)<br>
+                                • Akses Web App & Channel Telegram
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-black mb-6">300K</div>
+                            <a href="https://wa.me/6282120619478" class="btn-order bg-red-600 border-none hover:bg-white hover:text-red-600">DAFTAR</a>
+                        </div>
+                    </div>
+
+                    <div class="service-card group bg-blue-500/5 border-blue-500/20">
+                        <div class="text-left">
+                            <h4 class="font-black uppercase mb-4 text-blue-400 text-sm">10. Training Meditasi MEDiUS</h4>
+                            <p class="text-[10px] opacity-70 mb-4 uppercase tracking-widest leading-relaxed">
+                                (Meditasi Juz Diri & Asma Diri) untuk recovery system tubuh dan aktivasi sistem anti virus tubuh.
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-4xl font-black mb-6">200K</div>
+                            <a href="https://wa.me/6282120619478" class="btn-order bg-blue-600 border-none hover:bg-white hover:text-blue-600">DAFTAR</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-24 border-t border-white/5 text-center text-[11px] opacity-20 tracking-ultra uppercase font-black">
+        MEDiUS-eb2026-abahagus
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            const activeNav = document.getElementById('nav-' + pageId);
+            if(activeNav) activeNav.classList.add('active');
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        }
+
+        const osTitles = {
+            1: "OS Target Runner", 2: "OS Driver", 3: "OS Core Responsibility", 4: "OS Relator", 5: "OS Loyal Core",
+            6: "OS Explorer", 7: "OS Knowledge Engine", 8: "OS Warrior Mode", 9: "OS Resilient Fighter", 10: "OS Vision Accelerator",
+            11: "OS System Architect", 12: "OS Strategic Mastermind", 13: "OS Creative Designer", 14: "OS Humanitarian Activist", 15: "OS Creative Generator",
+            16: "OS System Guardian", 17: "OS Star Performer", 18: "OS Caregiver", 19: "OS Inspirer", 20: "OS Network Builder",
+            21: "OS Communicator Leader", 22: "OS Stage Performer", 23: "OS Idealist Protector", 24: "OS Insight Observer", 25: "OS Analytical Thinker",
+            26: "OS Dominant Executor", 27: "OS System Builder", 28: "OS Vision Motivator", 29: "OS Natural Leader", 30: "OS System Controller"
+        };
+
+        const personalityData = {
+            1: "Pribadi yang sangat futuristik, pekerja keras, supel, eksploratif dan success oriented. Umumnya ambisinya sangat besar dan sulit dibendung keinginannya.",
+            2: "Pribadi yang ulet, pekerja keras, mengendalikan, memiliki skill yang bisa diandalkan dan energik. Tipe ini tulus dan mudah berbagi.",
+            3: "Pribadi yang ulet, pekerja keras, responsible, rasional dan eksplorer serta tulus dalam melayani sesama. Bagi tipe ini keluarga adalah segalanya.",
+            4: "Pribadi yang sangat sensitif, sering mengedepankan perasaan, peduli, ramah dan hangat dalam berinteraksi. Tipe ini sangat bertanggung jawab.",
+            5: "Pribadi yang low profil atau pendiam diawal penampilannya, sensitif, ramah, peduli, loyal, dan sangat humanis.",
+            6: "Pribadi yang optimis, easygoing, keras keinginan, ramah, peduli, melayani dan menikmati jika bersama banyak orang.",
+            7: "Pribadi yang haus pengetahuan, pembelajar, selalu mengamati untuk memenuhi dahaga intelektualnya. Tipe ini sangat kritis dan sistematis.",
+            8: "Pribadi yang energik, keras keinginan, mobilitasnya yang tinggi, menikmati kegiatan outdoor. Ambisinya sangat besar.",
+            9: "Pribadi yang energik, mobilitasnya yang tinggi, menikmati kegiatan outdoor dan cenderung introspektif. Minat pada spiritualitas tinggi.",
+            10: "Tipe aktifis dengan semangat tinggi, mobilitas tinggi, bergerak cepat namun cenderung tergesa-gesa. Menyukai kegiatan outdoor.",
+            11: "Memiliki skill yang bisa diandalkan serta berbakat dalam mengendalikan orang lain. Berani mengambil resiko demi prestasi.",
+            12: "Berupaya perfeks, berpikir jangka panjang dan penuh perhitungan. Berbakat memimpin namun sangat sensitif terhadap tekanan.",
+            13: "Energik, ekspresif, sensitif, dan keras keinginan dalam mengejar target. Menyukai keindahan dan seni.",
+            14: "Aktif, humanis, rasional, berani dan loyal. Mudah berbagi dan berani berkorban demi kemanusiaan. Pribadinya sangat bijak.",
+            15: "Keras keinginan, kreatif, tabah, dan memiliki minat spiritualitas yang kuat. Cenderung keras kepala dan sering menunda pekerjaan.",
+            16: "Pendiam di awal, keras keinginan, berorientasi kemanfaatan dan bijak. Tegas dalam bekerja dan penuh perhitungan.",
+            17: "Energik dan humanis dengan selera seni tinggi. Bergerak cepat, spontan, dan ekspresif karena ingin populer.",
+            18: "Ramah, terbuka, kritis, analitis dan mengayomi. Memiliki sifat alami yang hangat dan lapang dada.",
+            19: "Energik, mudah bersosialisasi, kritis, dan cakap dalam berkomunikasi baik lisan maupun tulisan.",
+            20: "Pendiam di awal namun sangat mumpuni dalam membangun jaringan (networking). Memiliki tekad yang sangat keras.",
+            21: "Sangat informatif dan berbakat alami menjadi pemimpin yang mendominasi. Menyukai kelompok dan interaksi sosial.",
+            22: "Humanis, kreatif, dan suka menarik perhatian. Sangat sensitif dan peduli pada sesama.",
+            23: "Loyal dan bahagia jika bisa bermanfaat bagi orang lain. Hidup teratur, protektif, dan memiliki minat besar pada spiritualitas.",
+            24: "Memiliki firasat tajam, analitis, dan blak-blakan. Ingatannya sangat kuat dan didominasi oleh kecerdasan intelektual.",
+            25: "Kritis, intelektual, pembelajar dan argumentatif. Sangat menyukai keindahan dan seni. Terbuka pada hal-hal baru.",
+            26: "Pendiam di awal namun memiliki ambisi target yang luar biasa keras. Handal dalam berbahasa dan adaptasi.",
+            27: "Supel, kokoh, dan handal dalam membangun sistem. Memiliki kepedulian sosial yang tinggi.",
+            28: "Energik, ekspresif, dan sangat inspiratif dalam berkomunikasi. Memiliki visi jauh ke depan dan optimis.",
+            29: "Pionir penggerak dengan mobilitas tinggi dan bakat pemimpin alami. Visi jauh ke depan dan pantang menyerah.",
+            30: "Sangat menonjol dalam manajemen komunitas. Penuh semangat, rasional, dan mengayomi. Bakat kepemimpinannya alami."
+        };
+
+        const n_tgl_thn = { "1":37,"2":45,"3":28,"4":30,"5":32,"6":30,"7":32,"8":34,"9":37,"10":26,"11":31,"12":19,"13":41,"14":30,"15":34,"16":21,"17":27,"18":16,"19":44,"20":26,"21":54,"22":27,"23":24,"24":30,"25":18,"26":25,"27":37,"28":43,"29":28,"30":38,"31":38 };
+        const n_bln = { "1":35,"2":43,"3":26,"4":28,"5":30,"6":28,"7":30,"8":32,"9":35,"10":24,"11":29,"12":17 };
+
+        function prosesHitung() {
+            const t = document.getElementById("tgl").value;
+            const b = document.getElementById("bln").value;
+            const thInput = document.getElementById("thn").value;
+            if(!t || !b || !thInput) { alert("Input harus lengkap!"); return; }
+            let h_th = 0; let temp = parseInt(thInput);
+            while (temp > 0) { h_th += temp % 10; temp = Math.floor(temp / 10); }
+            let res = (n_tgl_thn[t] || 0) + (n_bln[b] || 0) + (n_tgl_thn[h_th] || 0) - 19;
+            while (res > 30) res -= 30;
+            if (res < 1) res = 1;
+            document.getElementById("app-result").classList.remove('hidden');
+            document.getElementById("res-juz").innerText = "JUZ " + res;
+            document.getElementById("res-os").innerText = osTitles[res];
+            document.getElementById("res-desc").innerText = personalityData[res];
+            document.getElementById("app-result").scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+</html>
